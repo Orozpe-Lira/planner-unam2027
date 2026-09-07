@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calendario semestre 2027-1</title>
+<style>
+:root{
+  --bg:#f5f6f8;--panel:#ffffff;--text:#1e2329;--muted:#667085;--line:#e5e7eb;
+  --accent:#3157d5;--accent-soft:#e9eeff;--danger:#b42318;--warn:#b54708;--ok:#067647;
+  --c0502:#6750a4;--c0614:#0b6e75;--c0701:#9a6700;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+header{background:var(--panel);border-bottom:1px solid var(--line);padding:22px max(18px,calc((100% - 1220px)/2))}
+header h1{margin:0 0 5px;font-size:clamp(24px,3vw,36px)}
+header p{margin:0;color:var(--muted)}
+.wrap{max-width:1220px;margin:0 auto;padding:18px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+button,select,input{font:inherit}
+button,.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:9px 12px;cursor:pointer}
+button:hover{border-color:#b6bdc8}
+button.primary{background:var(--accent);border-color:var(--accent);color:white}
+select{border:1px solid var(--line);border-radius:10px;padding:9px 34px 9px 10px;background:white}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 18px}
+.tab{border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:9px}
+.tab.active{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.panel{display:none}.panel.active{display:block}
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat strong{display:block;font-size:26px}.stat span{color:var(--muted);font-size:13px}
+.progressbar{height:10px;background:#e8ebef;border-radius:999px;overflow:hidden;margin-top:8px}.progressbar>i{display:block;height:100%;background:var(--accent);width:0}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+.task{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
+.task.done{opacity:.64}.task.done h3{text-decoration:line-through}
+.check{width:23px;height:23px;accent-color:var(--accent);margin-top:3px}
+.task h3{margin:0;font-size:16px}.meta{display:flex;gap:7px;flex-wrap:wrap;margin:5px 0 7px}.pill{font-size:12px;padding:3px 8px;border-radius:999px;background:#f2f4f7;color:#475467}
+.course-0502{border-left:5px solid var(--c0502)}.course-0614{border-left:5px solid var(--c0614)}.course-0701{border-left:5px solid var(--c0701)}
+.desc{color:#475467;font-size:14px;margin:5px 0}
+.deadline{text-align:right;min-width:120px}.deadline strong{display:block}.deadline small{color:var(--muted)}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:4px 8px;border-radius:999px}.urgent{background:#fee4e2;color:var(--danger)}.soon{background:#fef0c7;color:var(--warn)}.later{background:#ecfdf3;color:var(--ok)}.past{background:#f2f4f7;color:#667085}
+details{margin-top:8px}summary{cursor:pointer;color:var(--accent);font-size:13px;font-weight:700}
+.steps{display:grid;gap:6px;margin-top:8px}.step{display:flex;gap:8px;align-items:flex-start;font-size:13px}.step input{margin-top:3px}
+.notes{width:100%;min-height:66px;border:1px solid var(--line);border-radius:9px;padding:8px;margin-top:8px;resize:vertical;background:#fff}
+.calendar-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.calendar-head h2{margin:0;font-size:20px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+.dow{padding:9px;text-align:center;font-size:12px;color:var(--muted);font-weight:700;background:#fafafa;border-bottom:1px solid var(--line)}
+.day{min-height:120px;padding:8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}.day:nth-child(7n){border-right:0}.daynum{font-size:12px;font-weight:700;color:#344054;margin-bottom:5px}.outside{background:#fafafa;color:#98a2b3}
+.event{font-size:11px;padding:4px 6px;border-radius:6px;margin:4px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-left:3px solid #999;background:#f8f9fb}.event.c0502{border-color:var(--c0502)}.event.c0614{border-color:var(--c0614)}.event.c0701{border-color:var(--c0701)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:8px 0 12px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.focus{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}.focus h2{margin:0 0 6px;font-size:20px}.focus p{margin:0;color:var(--muted)}
+.empty{padding:28px;text-align:center;color:var(--muted);background:var(--panel);border:1px dashed var(--line);border-radius:14px}
+.footer-note{font-size:12px;color:var(--muted);margin:18px 2px}
+@media(max-width:760px){
+ .summary{grid-template-columns:repeat(2,1fr)}
+ .task{grid-template-columns:auto 1fr}.deadline{grid-column:2;text-align:left}
+ .cal{display:block;overflow-x:auto;white-space:nowrap}.cal-inner{min-width:760px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Semestre 2027-1 · Calendario de actividades</h1>
+  <p>3 materias · Agosto–diciembre 2026 · Marca tareas y pasos como completados. El progreso se guarda en este navegador.</p>
+</header>
+<div class="wrap">
+  <div class="toolbar">
+    <select id="courseFilter" aria-label="Filtrar por materia">
+      <option value="all">Todas las materias</option>
+      <option value="0502">0502 · Psicología Aplicada de Elección I</option>
+      <option value="0614">0614 · Método científico y evaluación psicológica</option>
+      <option value="0701">0701 · Desarrollo humano</option>
+    </select>
+    <select id="statusFilter" aria-label="Filtrar por estado">
+      <option value="all">Todos los estados</option>
+      <option value="pending">Pendientes</option>
+      <option value="done">Completadas</option>
+    </select>
+    <button id="exportBtn">Respaldar progreso</button>
+    <label class="btn">Restaurar progreso <input id="importInput" type="file" accept="application/json" hidden></label>
+    <button id="resetBtn">Reiniciar</button>
+  </div>
+
+  <div class="summary">
+    <div class="stat"><strong id="doneCount">0</strong><span>actividades completadas</span></div>
+    <div class="stat"><strong id="pendingCount">0</strong><span>actividades pendientes</span></div>
+    <div class="stat"><strong id="nextCount">0</strong><span>entregas en próximos 7 días</span></div>
+    <div class="stat"><strong id="pct">0%</strong><span>avance general</span><div class="progressbar"><i id="bar"></i></div></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="agenda">Agenda</button>
+    <button class="tab" data-tab="calendar">Calendario</button>
+    <button class="tab" data-tab="focus">Qué hacer ahora</button>
+  </div>
+
+  <section class="panel active" id="agenda">
+    <div id="taskList" class="grid"></div>
+  </section>
+
+  <section class="panel" id="calendar">
+    <div class="calendar-head">
+      <button id="prevMonth" aria-label="Mes anterior">←</button>
+      <h2 id="monthTitle"></h2>
+      <button id="nextMonth" aria-label="Mes siguiente">→</button>
+    </div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--c0502)"></i>0502</span>
+      <span><i class="dot" style="background:var(--c0614)"></i>0614</span>
+      <span><i class="dot" style="background:var(--c0701)"></i>0701</span>
+    </div>
+    <div class="cal" id="calendarGrid"></div>
+  </section>
+
+  <section class="panel" id="focus">
+    <div class="focus">
+      <h2>Plan práctico</h2>
+      <p>La regla del planner: no usar la fecha límite como fecha para empezar. Las tareas se ordenan por cierre y complejidad, y cada una tiene pasos pequeños para irla cerrando.</p>
+    </div>
+    <div id="focusList" class="grid"></div>
+  </section>
+
+  <p class="footer-note">Fechas tomadas de las programaciones del semestre 2027-1. Cuando una hora no está especificada claramente en el documento, el planner lo indica para que la confirmes en la plataforma.</p>
+</div>
+
+<script>
+const TASKS = [{"id": "0502-foro", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "Foro de presentación", "start": "2026-08-31", "end": "2026-09-04", "time": "", "kind": "Foro", "weight": "Sin peso", "team": "Individual", "details": "Presentación y actividades de bienvenida.", "steps": ["Revisar la consigna del foro", "Publicar la presentación", "Confirmar que quedó registrada"]}, {"id": "0502-sesion-intro", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "Sesión introductoria y bienvenida", "start": "2026-09-07", "end": "2026-09-07", "time": "21:00", "kind": "Sesión", "weight": "Sesiones: 5% en conjunto", "team": "Grupal", "details": "Sesión por Zoom. Tener cámara, micrófono y audífonos.", "steps": ["Revisar materiales previos", "Probar Zoom, cámara y audio", "Asistir y anotar dudas"]}, {"id": "0502-a1", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A1 · Presentación en video: Psicometría y NEE", "start": "2026-09-07", "end": "2026-09-11", "time": "", "kind": "Video", "weight": "5%", "team": "Equipo de 4", "details": "Video de 10 a 15 min sobre psicometría, NEE, discapacidades educativas e instrumentos psicométricos/no psicométricos.", "steps": ["Confirmar equipo de 4 y repartir temas", "Leer bibliografía básica y buscar fuentes confiables", "Preparar guion y presentación visual", "Grabar con participación visible de todo el equipo", "Revisar APA, duración y subir"]}, {"id": "0502-a2", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A2 · Cuadro comparativo: Evaluación de la diversidad de las NEE", "start": "2026-09-12", "end": "2026-09-18", "time": "", "kind": "Escrito", "weight": "5%", "team": "Equipo de 4", "details": "Comparar discapacidad, hospitalización, población indígena, migrantes, situación de calle y capacidades sobresalientes; incluir barreras de aprendizaje y tipos de evaluación.", "steps": ["Confirmar equipo y dividir categorías", "Leer recursos y localizar fuentes adicionales", "Construir cuadro comparativo", "Redactar introducción y conclusión", "Revisar APA, ortografía y exportar a PDF"]}, {"id": "0502-a4", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A4 · Sesión de reforzamiento", "start": "2026-09-21", "end": "2026-09-21", "time": "", "kind": "Sesión", "weight": "Sesiones: 5% en conjunto", "team": "Grupal", "details": "Retroalimentación de actividades y preparación de la parte práctica.", "steps": ["Revisar retroalimentación previa", "Preparar dudas concretas", "Asistir o revisar instrucciones asincrónicas"]}, {"id": "0502-a3", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A3 · Evaluación de necesidades y justificación", "start": "2026-09-19", "end": "2026-09-25", "time": "", "kind": "Proyecto", "weight": "20%", "team": "Individual", "details": "Elegir una NEE, plantear paradigma teórico, objetivo de evaluación y justificar cómo se evaluará mediante una batería. Máximo 5 cuartillas.", "steps": ["Elegir la NEE y delimitar el problema", "Reunir bibliografía confiable", "Definir objetivo: qué, para qué y cómo evaluar", "Redactar justificación y propuesta de batería", "Revisar APA y entregar PDF"]}, {"id": "0502-a5", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A5 · Cuadro sinóptico: Implicaciones de la evaluación en NEE", "start": "2026-09-26", "end": "2026-10-01", "time": "", "kind": "Escrito", "weight": "5%", "team": "Individual", "details": "Criterios de selección, protocolos de aplicación e implicaciones éticas de pruebas psicométricas.", "steps": ["Buscar 3 fuentes confiables", "Extraer criterios, protocolos y ética", "Diseñar cuadro sinóptico", "Redactar conclusión", "Revisar referencias APA y exportar PDF"]}, {"id": "0502-a6", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A6 · Criterios de selección de pruebas psicométricas y complementarias", "start": "2026-10-02", "end": "2026-10-23", "time": "", "kind": "Proyecto", "weight": "15%", "team": "Individual", "details": "Seleccionar mínimo 3 instrumentos para la batería, integrar ficha técnica y justificar su inclusión.", "steps": ["Definir criterios de selección según la NEE", "Localizar mínimo 3 instrumentos viables", "Completar ficha técnica de cada instrumento", "Justificar la batería con citas", "Revisar coherencia, APA y entregar PDF"]}, {"id": "0502-a7", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A7 · Sesión de reforzamiento", "start": "2026-10-26", "end": "2026-10-26", "time": "20:00", "kind": "Sesión", "weight": "Sesiones: 5% en conjunto", "team": "Grupal", "details": "Seguimiento a la construcción de la batería y resolución de dudas.", "steps": ["Revisar A5 y A6", "Anotar dudas de la batería", "Asistir a las 20:00 o revisar la sesión"]}, {"id": "0502-a8", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A8 · Cuadro sinóptico: Fundamentos de elaboración", "start": "2026-10-24", "end": "2026-10-30", "time": "", "kind": "Escrito", "weight": "5%", "team": "Individual", "details": "Fundamentos para elaborar evaluaciones y reactivos, vinculados con la NEE elegida.", "steps": ["Revisar lecturas", "Extraer fundamentos de evaluación y reactivos", "Organizar cuadro sinóptico", "Redactar conclusión", "Revisar APA y entregar PDF"]}, {"id": "0502-expo", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "Exposición: Aplicación de instrumentos de la batería", "start": "2026-10-31", "end": "2026-11-06", "time": "", "kind": "Presentación", "weight": "5%", "team": "Individual / sesión Zoom", "details": "Exposición de 15 min sobre la forma de aplicar los instrumentos seleccionados.", "steps": ["Confirmar instrumentos definitivos", "Preparar explicación de aplicación", "Crear presentación breve", "Ensayar para 15 min", "Presentar en el horario asignado"]}, {"id": "0502-a9", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A9 · Infografía: Principios institucionales y ética del reporte", "start": "2026-11-07", "end": "2026-11-13", "time": "", "kind": "Infografía", "weight": "5%", "team": "Individual", "details": "Infografía sobre principios institucionales para elaborar reportes y ética en la elaboración del reporte.", "steps": ["Revisar lecturas", "Seleccionar ideas clave", "Diseñar estructura visual", "Agregar introducción/conclusión si aplica según lineamientos", "Revisar APA y entregar PDF"]}, {"id": "0502-extra", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "Fecha extraordinaria opcional", "start": "2026-11-21", "end": "2026-11-21", "time": "", "kind": "Recordatorio", "weight": "Máximo 6", "team": "Solo si se necesita", "details": "El documento señala una sola oportunidad de entrega extemporánea de cualquier actividad mediante una tarea especial.", "steps": ["Usar únicamente si es necesario", "Verificar en plataforma la tarea especial", "Entregar antes del cierre"]}, {"id": "0502-a10", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A10 · Sesión de cierre de semestre", "start": "2026-11-23", "end": "2026-11-23", "time": "20:00", "kind": "Sesión", "weight": "Sesiones: 5% en conjunto", "team": "Grupal", "details": "Sesión de cierre, retroalimentación e instrucciones para la evaluación sumativa.", "steps": ["Revisar avances de la batería", "Preparar dudas finales", "Asistir a las 20:00 o revisar instrucciones asincrónicas"]}, {"id": "0502-a11", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A11 · Presentación de batería", "start": "2026-11-14", "end": "2026-11-27", "time": "", "kind": "Proyecto final", "weight": "25%", "team": "Individual", "details": "Integrar portada, justificación, NEE, objetivos, pruebas, protocolo de aplicación, criterios éticos y referencias.", "steps": ["Integrar documentos y decisiones previas", "Revisar fichas técnicas de las pruebas", "Redactar protocolo y secuencia de aplicación", "Incluir criterios éticos y manejo de información", "Revisión final de coherencia, APA y entrega"]}, {"id": "0502-a12", "course": "0502 · Psicología Aplicada de Elección I", "short": "0502", "title": "A12 · Autoevaluación en video", "start": "2026-11-28", "end": "2026-12-04", "time": "", "kind": "Video", "weight": "5%", "team": "Individual", "details": "Video de autoevaluación de 5 a 8 min apoyado en presentación; debe alojarse en YouTube como oculto.", "steps": ["Responder los puntos de reflexión", "Crear una presentación breve", "Preparar guion de 5 a 8 min", "Grabar y revisar audio/video", "Subir como oculto y entregar enlace"]}, {"id": "0614-foro", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Foro de presentación", "start": "2026-08-31", "end": "2026-09-06", "time": "", "kind": "Foro", "weight": "Sin peso", "team": "Individual", "details": "Presentación personal y expectativas del módulo.", "steps": ["Revisar consigna", "Publicar presentación", "Confirmar que quedó registrada"]}, {"id": "0614-video-fases", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Video entrevista-fases: cuadro de análisis", "start": "2026-08-31", "end": "2026-09-07", "time": "", "kind": "Escrito", "weight": "Unidad I: 30% total", "team": "Individual", "details": "Revisar el video de plataforma e identificar tipo de entrevista, estructura, fases, preguntas y características del entrevistador en el formato indicado.", "steps": ["Leer recursos básicos", "Revisar el video y tomar notas por fases", "Completar el formato de análisis", "Revisar portada y formato PDF", "Subir antes del cierre"]}, {"id": "0614-audio-asi", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Entrevista audio: Análisis Secuencial Integrativo", "start": "2026-09-08", "end": "2026-09-16", "time": "", "kind": "Escrito", "weight": "Unidad I: 30% total", "team": "Individual", "details": "Escuchar el audio de entrevista y elaborar el cuadro integrando los elementos del Análisis Secuencial Integrativo.", "steps": ["Leer los recursos de la Unidad I", "Escuchar el audio y marcar momentos clave", "Completar el Análisis Secuencial Integrativo", "Revisar formato y presentación", "Entregar PDF"]}, {"id": "0614-video-caso", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Video entrevista: caso ficticio", "start": "2026-09-08", "end": "2026-09-16", "time": "", "kind": "Video", "weight": "Unidad I: 30% total", "team": "Individual + participante", "details": "Video de aproximadamente 15 min con un caso ficticio, integrando las fases de entrevista. Entrega mediante enlace de Drive con acceso al correo de la docente.", "steps": ["Diseñar un caso ficticio y preparar preguntas", "Conseguir participante y ensayar", "Grabar las fases de la entrevista", "Revisar duración y desempeño", "Subir a Drive, dar acceso y pegar enlace"]}, {"id": "0614-sesion", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Sesión sincrónica de Unidad I", "start": "2026-09-09", "end": "2026-09-09", "time": "11:00", "kind": "Sesión", "weight": "Opcional", "team": "Grupal", "details": "Sesión por Google Meet. El documento indica “11 horas”; conviene confirmar si corresponde a 11:00 a. m.", "steps": ["Confirmar horario exacto en plataforma", "Leer programa y práctica supervisada", "Entrar con máximo 10 min de tolerancia"]}, {"id": "0614-observacion-juego", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Definición, observación y registro de conducta", "start": "2026-09-17", "end": "2026-09-27", "time": "", "kind": "Práctica", "weight": "Unidad II: 20% total", "team": "Individual + participante", "details": "Realizar 10 observaciones de 30 min en situación de juego con un menor de 4 a 8 años, con consentimiento informado, registro, gráficas y conclusión.", "steps": ["Conseguir participante y consentimiento informado", "Definir operacionalmente las conductas", "Realizar y registrar las 10 observaciones", "Graficar y analizar resultados", "Redactar conclusión, anexar consentimiento y entregar"]}, {"id": "0614-observacion-controlada", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Registro de observación controlada", "start": "2026-09-28", "end": "2026-10-10", "time": "", "kind": "Práctica", "weight": "Unidad II: 20% total", "team": "Individual + participantes", "details": "Observar una negociación padre/madre/tutor-adolescente durante 15 min, codificar comunicación, negociación y trastornos de comunicación; incluir gráficas, análisis y anexos.", "steps": ["Conseguir participantes y autorización", "Preparar formato y categorías de registro", "Realizar la observación de 15 min", "Codificar, graficar y analizar", "Redactar informe, conclusiones y anexos"]}, {"id": "0614-foro-u2", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Foro de Unidad II", "start": "2026-10-10", "end": "2026-10-10", "time": "", "kind": "Foro", "weight": "Unidad II: 20% total", "team": "Individual", "details": "Compartir importancia de observación conductual/controlada, experiencia en las actividades y retroalimentar a 2 compañeros.", "steps": ["Redactar participación con base en lecturas", "Publicar experiencia y reflexión", "Retroalimentar a 2 compañeros"]}, {"id": "0614-autoobs", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Autoobservación: autorregistro de 5 días", "start": "2026-10-11", "end": "2026-10-25", "time": "", "kind": "Práctica", "weight": "Unidad III: 15% total", "team": "Individual", "details": "Registrar durante 5 días una conducta propia a cambiar, considerando cognición, respuesta fisiológica y conductual, frecuencia, duración e intensidad; analizar con gráficas.", "steps": ["Elegir conducta y preparar formato", "Registrar 5 días completos", "Organizar y graficar datos", "Analizar resultados con bibliografía", "Redactar conclusiones, anexos y entregar"]}, {"id": "0614-diagnostico", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Ejercicio diagnóstico de Unidad III", "start": "2026-10-17", "end": "2026-10-25", "time": "", "kind": "Cuestionario", "weight": "Unidad III: 15% total", "team": "Individual", "details": "Responder en plataforma los reactivos del ejercicio diagnóstico con base en las lecturas.", "steps": ["Revisar lecturas de la Unidad III", "Entrar al ejercicio con tiempo", "Responder y verificar envío"]}, {"id": "0614-infografia", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Infografía: Técnicas psicofisiológicas", "start": "2026-10-27", "end": "2026-11-07", "time": "", "kind": "Infografía", "weight": "Unidad IV: 15% total", "team": "Individual", "details": "Infografía sobre técnicas, variables, registros psicofisiológicos y biofeedback; incluir bibliografía y pegar el enlace en comentarios.", "steps": ["Leer Carrobles y Buela", "Sintetizar los 6 apartados solicitados", "Diseñar infografía académica", "Revisar claridad y bibliografía", "Subir y pegar enlace en comentarios"]}, {"id": "0614-cuadro-biofeedback", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Cuadro sinóptico: Biofeedback", "start": "2026-11-08", "end": "2026-11-16", "time": "", "kind": "Escrito", "weight": "Unidad IV: 15% total", "team": "Individual", "details": "Cuadro sinóptico sobre historia, definición, fundamentos y procedimiento del biofeedback. Entrega en PDF, Arial 11, interlineado sencillo y texto justificado.", "steps": ["Leer el texto de Simón", "Extraer historia, definición y fundamentos", "Organizar el procedimiento paso a paso", "Construir cuadro sinóptico", "Revisar APA y formato PDF"]}, {"id": "0614-examen", "course": "0614 · El método científico y la evaluación psicológica", "short": "0614", "title": "Examen final", "start": "2026-11-21", "end": "2026-11-22", "time": "", "kind": "Examen", "weight": "20%", "team": "Individual", "details": "Examen en plataforma con base en las lecturas de todo el módulo.", "steps": ["Crear guía de estudio por unidad", "Repasar conceptos y autores clave", "Resolver dudas pendientes", "Presentar el examen dentro del periodo"]}, {"id": "0701-foro", "course": "0701 · Desarrollo humano. El ciclo vital", "short": "0701", "title": "Foro de presentación (sugerido)", "start": "2026-08-31", "end": "2026-09-04", "time": "", "kind": "Foro", "weight": "Sin peso", "team": "Individual", "details": "Presentación y expectativas del módulo.", "steps": ["Revisar consigna", "Publicar presentación", "Confirmar participación"]}, {"id": "0701-a1", "course": "0701 · Desarrollo humano. El ciclo vital", "short": "0701", "title": "Actividad 1 · A través de mí", "start": "2026-09-07", "end": "2026-09-11", "time": "", "kind": "Escrito", "weight": "5%", "team": "Individual", "details": "Tabla con aspectos físico, cognitivo, social y psicológico del desarrollo humano, descripción detallada y ejemplo personal para cada uno.", "steps": ["Definir los 4 aspectos con base en el material", "Elegir un ejemplo personal para cada aspecto", "Construir la tabla", "Revisar redacción y coherencia", "Agregar portada y referencias; entregar"]}, {"id": "0701-a2", "course": "0701 · Desarrollo humano. El ciclo vital", "short": "0701", "title": "Actividad 2 · Ciclo vital de la familia", "start": "2026-09-14", "end": "2026-09-18", "time": "", "kind": "Esquema", "weight": "5%", "team": "Individual", "details": "Árbol de la vida: raíces = primeras etapas; tronco = consolidación familiar; copa/hojas = nido vacío. Integrar retos, roles y particularidades.", "steps": ["Leer el recurso del ciclo vital familiar", "Elegir familia real, conocida o ficticia", "Organizar etapas en raíces, tronco y copa", "Añadir retos, roles y particularidades", "Revisar y entregar"]}, {"id": "0701-a3", "course": "0701 · Desarrollo humano. El ciclo vital", "short": "0701", "title": "Actividad 3 · Análisis de la película Boyhood", "start": "2026-09-21", "end": "2026-09-25", "time": "", "kind": "Ensayo", "weight": "5%", "team": "Individual", "details": "Introducción, dinámica familiar, etapas de vida del protagonista y sus características, conclusión y referencias.", "steps": ["Ver Boyhood tomando notas por etapa", "Relacionar escenas con bibliografía", "Redactar dinámica familiar y etapas vitales", "Escribir introducción y conclusión", "Revisar referencias y entregar"]}, {"id": "0701-a4", "course": "0701 · Desarrollo humano. El ciclo vital", "short": "0701", "title": "Actividad 4 · Desarrollo del lenguaje", "start": "2026-09-28", "end": "2026-10-02", "time": "", "kind": "Infografía", "weight": "10%", "team": "Equipo de 3", "details": "Infografía en equipo sobre etapas del desarrollo del lenguaje, basada en el capítulo 6, pp. 129-152, con ejemplos externos.", "steps": ["Formar equipo de 3 y repartir apartados", "Leer pp. 129-152 y extraer etapas", "Buscar ejemplos externos", "Diseñar e integrar la infografía", "Revisar secuencia, citas y entregar"]}, {"id": "0701-a5", "course": "0701 · Desarrollo humano. El ciclo vital", "short": "0701", "title": "Actividad 5 · Resumen: El mundo social", "start": "2026-10-05", "end": "2026-10-09", "time": "", "kind": "Resumen", "weight": "5%", "team": "Individual", "details": "Resumen del capítulo 10 de Berger, pp. 237-263, con comentario reflexivo. Extensión de 10 a 15 cuartillas.", "steps": ["Leer pp. 237-263 y subrayar ideas esenciales", "Crear esquema por apartados", "Redactar el resumen sin copiar", "Escribir comentario reflexivo", "Revisar extensión, APA y entregar"]}, {"id": "0701-a6", "course": "0701 · Desarrollo humano. El ciclo vital", "short": "0701", "title": "Actividad 6 · Video de psicopatología en la infancia", "start": "2026-10-12", "end": "2026-10-23", "time": "", "kind": "Video", "weight": "10%", "team": "Equipo de 3", "details": "Video de 10 a 13 min sobre trastornos en la infancia: antecedentes, factores, cambios, consecuencias, tratamientos y un caso real documentado.", "steps": ["Formar equipo y elegir trastornos/caso", "Investigar con fuentes confiables", "Preparar guion y recursos visuales", "Grabar video de 10 a 13 min", "Editar, revisar APA y entregar"]}, {"id": "0701-a7", "course": "0701 · Desarrollo humano. El ciclo vital", "short": "0701", "title": "Actividad 7 · Proceso de lectoescritura", "start": "2026-10-26", "end": "2026-11-06", "time": "", "kind": "Práctica", "weight": "20%", "team": "Individual + menor y responsable", "details": "Texto académico de 7 a 10 cuartillas con teoría piagetiana, lectoescritura de Ferreiro, entrevista al responsable, ejercicio de escritura con menor de 3 a 6 años, análisis y evidencia fotográfica.", "steps": ["Conseguir menor de 3 a 6 años y autorización del responsable", "Leer Piaget/Ferreiro y preparar entrevista", "Realizar entrevista y ejercicio de 5 palabras", "Analizar desarrollo cognitivo y nivel de conceptualización", "Redactar 7-10 cuartillas, anexar evidencia, revisar APA y entregar"]}, {"id": "0701-a8", "course": "0701 · Desarrollo humano. El ciclo vital", "short": "0701", "title": "Actividad 8 · Inserción en una nueva etapa", "start": "2026-11-09", "end": "2026-11-13", "time": "", "kind": "Tríptico", "weight": "10%", "team": "Individual", "details": "Tríptico sobre adolescencia, autoestima y salud mental, trastornos, violencia escolar, prevención/bienestar y conclusión.", "steps": ["Leer recursos y seleccionar información", "Organizar secciones del tríptico", "Redactar contenido breve y claro", "Diseñar recursos visuales", "Revisar bibliografía APA y entregar"]}, {"id": "0701-final", "course": "0701 · Desarrollo humano. El ciclo vital", "short": "0701", "title": "Evaluación final · Video de las cuatro unidades", "start": "2026-11-17", "end": "2026-11-27", "time": "", "kind": "Proyecto final", "weight": "30%", "team": "Equipo de 4", "details": "Video de 20 a 30 min con presentación PowerPoint sobre los temas principales de las cuatro unidades, conclusiones y recursos visuales. Los 4 integrantes deben aparecer durante todo el video.", "steps": ["Confirmar equipo de 4 y repartir unidades", "Seleccionar temas clave y bibliografía", "Construir presentación y guion común", "Grabar a los 4 integrantes y cuidar duración", "Editar, revisar conclusiones/APA y subir individualmente"]}];
+const KEY = "planner_semestre_2027_1_v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e) { state = {}; }
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); renderAll(); }
+function getTaskState(id){
+  if(!state[id]) state[id] = {done:false, steps:{}, notes:""};
+  return state[id];
+}
+function parseDate(s){ const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d,12,0,0); }
+function fmtDate(s){ return new Intl.DateTimeFormat("es-MX",{day:"numeric",month:"short"}).format(parseDate(s)); }
+function rangeLabel(t){ return t.start===t.end ? fmtDate(t.end) : fmtDate(t.start)+" – "+fmtDate(t.end); }
+function dayDiff(dateA,dateB){ return Math.ceil((dateA-dateB)/86400000); }
+function todayMid(){ const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate(),12); }
+function urgency(t){
+  const diff=dayDiff(parseDate(t.end),todayMid());
+  if(diff<0) return ["past","Vencida"];
+  if(diff<=2) return ["urgent", diff===0?"Hoy":`En ${diff} día${diff===1?"":"s"}`];
+  if(diff<=7) return ["soon",`En ${diff} días`];
+  return ["later","Después"];
+}
+function courseClass(t){ return "course-"+t.short; }
+
+function currentFilters(){
+  return {course:document.getElementById("courseFilter").value,status:document.getElementById("statusFilter").value};
+}
+function filteredTasks(){
+  const f=currentFilters();
+  return TASKS.filter(t=>{
+    const st=getTaskState(t.id);
+    if(f.course!=="all" && t.short!==f.course) return false;
+    if(f.status==="done" && !st.done) return false;
+    if(f.status==="pending" && st.done) return false;
+    return true;
+  });
+}
+
+function taskCard(t, compact=false){
+  const st=getTaskState(t.id), [uc,ut]=urgency(t);
+  const stepHtml = t.steps.map((s,i)=>`<label class="step"><input type="checkbox" data-step="${i}" ${st.steps[i]?"checked":""}><span>${s}</span></label>`).join("");
+  return `<article class="task ${courseClass(t)} ${st.done?"done":""}" data-id="${t.id}">
+    <input class="check main-check" type="checkbox" aria-label="Marcar ${t.title} como completada" ${st.done?"checked":""}>
+    <div>
+      <h3>${t.title}</h3>
+      <div class="meta">
+        <span class="pill">${t.short}</span><span class="pill">${t.kind}</span><span class="pill">${t.weight}</span><span class="pill">${t.team}</span>
+      </div>
+      <p class="desc">${t.details}</p>
+      ${compact?"":`<details><summary>Plan de trabajo · ${Object.values(st.steps).filter(Boolean).length}/${t.steps.length} pasos</summary>
+        <div class="steps">${stepHtml}</div>
+        <textarea class="notes" placeholder="Notas personales, links, equipo, dudas...">${st.notes||""}</textarea>
+      </details>`}
+    </div>
+    <div class="deadline"><strong>${rangeLabel(t)}${t.time?" · "+t.time:""}</strong><small>cierre oficial</small><br><span class="badge ${uc}">${ut}</span></div>
+  </article>`;
+}
+function wireCards(container){
+  container.querySelectorAll(".task").forEach(card=>{
+    const id=card.dataset.id, st=getTaskState(id);
+    const main=card.querySelector(".main-check");
+    main.addEventListener("change",()=>{ st.done=main.checked; save(); });
+    card.querySelectorAll("[data-step]").forEach(cb=>cb.addEventListener("change",()=>{ st.steps[cb.dataset.step]=cb.checked; localStorage.setItem(KEY,JSON.stringify(state)); renderSummary(); }));
+    const notes=card.querySelector(".notes");
+    if(notes) notes.addEventListener("input",()=>{ st.notes=notes.value; localStorage.setItem(KEY,JSON.stringify(state)); });
+  });
+}
+function renderAgenda(){
+  const list=document.getElementById("taskList");
+  const items=filteredTasks().sort((a,b)=>a.end.localeCompare(b.end));
+  list.innerHTML=items.length?items.map(t=>taskCard(t)).join(""):`<div class="empty">No hay actividades con estos filtros.</div>`;
+  wireCards(list);
+}
+function renderSummary(){
+  const done=TASKS.filter(t=>getTaskState(t.id).done).length;
+  const pending=TASKS.length-done;
+  const now=todayMid();
+  const next=TASKS.filter(t=>!getTaskState(t.id).done && dayDiff(parseDate(t.end),now)>=0 && dayDiff(parseDate(t.end),now)<=7).length;
+  const pct=Math.round(done/TASKS.length*100);
+  document.getElementById("doneCount").textContent=done;
+  document.getElementById("pendingCount").textContent=pending;
+  document.getElementById("nextCount").textContent=next;
+  document.getElementById("pct").textContent=pct+"%";
+  document.getElementById("bar").style.width=pct+"%";
+}
+
+let viewMonth = new Date(2026,8,1);
+function renderCalendar(){
+  const f=currentFilters();
+  const year=viewMonth.getFullYear(), month=viewMonth.getMonth();
+  document.getElementById("monthTitle").textContent=new Intl.DateTimeFormat("es-MX",{month:"long",year:"numeric"}).format(viewMonth);
+  const first=new Date(year,month,1), last=new Date(year,month+1,0);
+  const mondayIndex=(first.getDay()+6)%7;
+  const start=new Date(year,month,1-mondayIndex);
+  const names=["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
+  let cells=names.map(n=>`<div class="dow">${n}</div>`).join("");
+  for(let i=0;i<42;i++){
+    const d=new Date(start); d.setDate(start.getDate()+i);
+    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    const events=TASKS.filter(t=>t.end===key && (f.course==="all" || t.short===f.course) && (f.status==="all" || (f.status==="done")===!!getTaskState(t.id).done));
+    cells+=`<div class="day ${d.getMonth()!==month?"outside":""}"><div class="daynum">${d.getDate()}</div>${events.map(t=>`<div class="event c${t.short}" title="${t.title}">${t.time?t.time+" · ":""}${t.title}</div>`).join("")}</div>`;
+  }
+  document.getElementById("calendarGrid").innerHTML=cells;
+}
+function complexity(t){
+  let s=0;
+  if(["Proyecto","Proyecto final","Práctica","Video"].includes(t.kind)) s+=3;
+  if(t.team.toLowerCase().includes("equipo")) s+=2;
+  if(/10 a 15|10 a 13|20 a 30|cuartillas|observa|batería/i.test(t.details)) s+=2;
+  return s;
+}
+function renderFocus(){
+  const now=todayMid();
+  const items=filteredTasks().filter(t=>!getTaskState(t.id).done && dayDiff(parseDate(t.end),now)>=0)
+    .sort((a,b)=>{
+      const da=dayDiff(parseDate(a.end),now), db=dayDiff(parseDate(b.end),now);
+      return (da-complexity(a)*1.5)-(db-complexity(b)*1.5);
+    }).slice(0,6);
+  const box=document.getElementById("focusList");
+  box.innerHTML=items.length?items.map(t=>taskCard(t)).join(""):`<div class="empty">No hay tareas pendientes próximas.</div>`;
+  wireCards(box);
+}
+function renderAll(){ renderSummary(); renderAgenda(); renderCalendar(); renderFocus(); }
+
+document.getElementById("courseFilter").addEventListener("change",renderAll);
+document.getElementById("statusFilter").addEventListener("change",renderAll);
+document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  btn.classList.add("active"); document.getElementById(btn.dataset.tab).classList.add("active");
+}));
+document.getElementById("prevMonth").addEventListener("click",()=>{viewMonth=new Date(viewMonth.getFullYear(),viewMonth.getMonth()-1,1);renderCalendar();});
+document.getElementById("nextMonth").addEventListener("click",()=>{viewMonth=new Date(viewMonth.getFullYear(),viewMonth.getMonth()+1,1);renderCalendar();});
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  if(confirm("¿Borrar todo el progreso y las notas guardadas?")){ state={}; localStorage.removeItem(KEY); renderAll(); }
+});
+document.getElementById("exportBtn").addEventListener("click",()=>{
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="respaldo_progreso_semestre_2027-1.json"; a.click(); URL.revokeObjectURL(a.href);
+});
+document.getElementById("importInput").addEventListener("change",async e=>{
+  const file=e.target.files[0]; if(!file) return;
+  try{ state=JSON.parse(await file.text()); localStorage.setItem(KEY,JSON.stringify(state)); renderAll(); }
+  catch(err){ alert("No pude leer ese respaldo."); }
+  e.target.value="";
+});
+renderAll();
+</script>
+</body>
+</html>
